@@ -23,6 +23,23 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     /**
+     * 修改分类
+     * @param categoryDTO
+     */
+    @Override
+    public void update(CategoryDTO categoryDTO) {
+        // 属性拷贝
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO,category);
+
+        //设置修改时间、修改人
+        category.setUpdateTime(LocalDateTime.now());
+        category.setUpdateUser(BaseContext.getCurrentId());
+
+        categoryMapper.update(category);
+    }
+
+    /**
      * 新增分类
      * @param categoryDTO
      */
