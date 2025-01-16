@@ -7,6 +7,13 @@ import com.sky.result.PageResult;
 public interface CategoryService {
 
     /**
+     * 启用禁用分类
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
+
+    /**
      * 修改分类
      * @param categoryDTO
      */
