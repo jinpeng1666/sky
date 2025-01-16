@@ -10,6 +10,12 @@ import java.util.List;
 public interface CategoryService {
 
     /**
+     * 删除分类
+     * @param id
+     */
+    void deleteById(Long id);
+
+    /**
      * 根据类型查询分类
      * @param type
      * @return
