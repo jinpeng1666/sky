@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -163,5 +164,24 @@ public class DishServiceImpl implements DishService {
 
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
+
+    /**
+     * 菜品起售停售
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Dish dish = new Dish();
+        // 菜品状态取反
+        if (Objects.equals(status, StatusConstant.ENABLE)) {
+            status = 1;
+        } else if (Objects.equals(status, StatusConstant.DISABLE)) {
+            status = 0;
+        }
+        dish.setStatus(status);
+        dish.setId(id);
+        dishMapper.update(dish);
     }
 }
