@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.annotation.ClearCache;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -39,14 +40,10 @@ public class DishController {
      */
     @PostMapping
     @ApiOperation("新增菜品")
+    @ClearCache(categoryId = "#dishDTO.categoryId")
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品：{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
-
-        // 清理redis中缓存的数据
-        String key = "dish" + dishDTO.getCategoryId();
-        redisTemplate.delete(key);
-
         return Result.success();
     }
 
@@ -70,14 +67,10 @@ public class DishController {
      */
     @DeleteMapping
     @ApiOperation("菜品批量删除")
+    @ClearCache
     public Result delete(@RequestParam List<Long> ids) {
         log.info("菜品批量删除：{}", ids);
         dishService.deleteBatch(ids);
-
-        // 清理redis中缓存的数据（以dish_开头的key）
-        Set keys = redisTemplate.keys("dish_*");
-        redisTemplate.delete(keys);
-
         return Result.success();
     }
 
@@ -101,14 +94,10 @@ public class DishController {
      */
     @PutMapping
     @ApiOperation("修改菜品")
+    @ClearCache
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品：{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
-
-        // 清理redis中缓存的数据（以dish_开头的key）
-        Set keys = redisTemplate.keys("dish_*");
-        redisTemplate.delete(keys);
-
         return Result.success();
     }
 
@@ -120,14 +109,10 @@ public class DishController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("菜品起售停售")
+    @ClearCache
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info("菜品起售停售：{}，{}",status, id);
         dishService.startOrStop(status, id);
-
-        // 清理redis中缓存的数据（以dish_开头的key）
-        Set keys = redisTemplate.keys("dish_*");
-        redisTemplate.delete(keys);
-
         return Result.success();
     }
 
