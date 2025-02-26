@@ -5,6 +5,12 @@ import com.sky.vo.OrderSubmitVO;
 
 public interface OrderService {
     /**
+     * 客户催单
+     * @param id
+     */
+    void reminder(Long id);
+
+    /**
      * 用户下单
      * @param ordersSubmitDTO
      * @return
