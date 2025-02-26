@@ -1,6 +1,7 @@
 package com.sky.controller.user;
 
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderSubmitVO;
@@ -42,5 +43,19 @@ public class OrderController {
     public Result reminder(@PathVariable("id") Long id) {
         orderService.reminder(id);
         return Result.success();
+    }
+
+    /**
+     * 历史订单查询
+     * @param page
+     * @param pageSize
+     * @param status
+     * @return
+     */
+    @GetMapping("/historyOrders")
+    @ApiOperation("历史订单查询")
+    public Result<PageResult> page(int page, int pageSize, Integer status) {
+        PageResult pageResult = orderService.pageQuery4User(page, pageSize, status);
+        return Result.success(pageResult);
     }
 }
